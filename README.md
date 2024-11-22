@@ -1,10 +1,6 @@
 # TroneAssignment
 
 
-Here’s a clear and concise **README.md** template for your Dockerized Laravel and Next.js app:
-
----
-
 # **Dockerized Laravel + Next.js Application**
 
 This project contains a Laravel backend and a Next.js frontend, both running in Docker containers. The setup uses Docker Compose to manage services like PHP, Node.js, and MySQL.
