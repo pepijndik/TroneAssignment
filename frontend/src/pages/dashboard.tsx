@@ -74,7 +74,7 @@ const Dashboard = () => {
                         </DangerButton>
                     </div>
                         
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-grey dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                        
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {characters && characters.map((character) => (
