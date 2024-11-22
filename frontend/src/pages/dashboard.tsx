@@ -9,6 +9,7 @@ import Character from '@/components/Character'
 import PrimaryButton from '@/components/PrimaryButton'
 import { useErrors } from '@/hooks/error'
 import DangerButton from '@/components/DangerButton'
+import { useTrigger } from '@/hooks/trigger'
 const Dashboard = () => {
     const {errors,setErrors} = useErrors()
     const { query, } = useRouter()
@@ -17,6 +18,7 @@ const Dashboard = () => {
     const [characters,setCharacters] = useState<CharacterType[]>(
         []
     );
+    const {trigger} = useTrigger();
     
     useEffect(() => {
         const reset = query && query.reset ? query.reset as string : ''
@@ -30,7 +32,6 @@ const Dashboard = () => {
     const { GetCharacters } = useCharacters();
 
     useEffect( ()=>{
-
         const get = async ()=>{
             const char = await  GetCharacters({
                 setErrors,
@@ -39,8 +40,8 @@ const Dashboard = () => {
            setCharacters(char);
         }
         get();
-    },[]);
-
+    },[trigger]);
+    
     return (
         <AppLayout
             header={

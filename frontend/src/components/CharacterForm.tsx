@@ -1,12 +1,13 @@
 import { CharacterType } from '@/app/types/CharacterType';
 import { useCharacters } from '@/hooks/characters'
 import { useErrors } from '@/hooks/error';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import Label from './Label';
 import Input from './Input';
 import PrimaryButton from './PrimaryButton';
 import ErrorMessage from './Errors';
+import { useRouter } from 'next/router';
 
 
 export function CharacterForm({
@@ -15,14 +16,33 @@ export function CharacterForm({
     const {errors,setErrors} = useErrors();
     const [status,setStatus] = useState();
   const { UpdateCharacter,CreateCharacter } = useCharacters()
-
+  const router = useRouter();
   const [name, setName] = useState('')
   const [health, setHealth] = useState('')
   const [attack, setAttack] = useState('')
   const [gameName, setGameName] = useState('')
-
+  const { GetCharacter } = useCharacters();
   const [isLoading, setIsLoading] = useState(false)
-
+  useEffect(()=>{
+      const get = async ()=>{
+        if(!id)
+          return;
+        await GetCharacter(id, {
+            setErrors,
+            setStatus
+        })
+        .then((character)=>
+          {
+            if(character){
+                setName(character.name);
+                setHealth(character.healthPoints.toString());
+                setAttack(character.attackPoints.toString());
+                setGameName(character.gamename);
+            }
+        });
+      }
+      get();
+  },[id])
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -44,13 +64,16 @@ export function CharacterForm({
             setErrors,
             setStatus
           })
+        
       }else{
         await CreateCharacter(newCharacter,{
             setErrors,
             setStatus
           });
       }
-    
+     
+      router.push('/dashboard')
+
       // Reset form
       setName('')
       setHealth('')
@@ -69,7 +92,7 @@ export function CharacterForm({
       <div>
 
       <div>
-        <Label htmlFor="gamename">Defense</Label>
+        <Label htmlFor="gamename">GameName</Label>
         <Input
           id="gamename"
           type="text"
@@ -110,7 +133,7 @@ export function CharacterForm({
       <ErrorMessage errors={errors} />
       <PrimaryButton type="submit" disabled={isLoading}
         onClick={handleSubmit}>
-        {isLoading ? 'Adding...' : 'Add Character'}
+        {isLoading ? 'Adding...' :  id ? "Update character" :   'Add Character'}
       </PrimaryButton>
     </form>
   )

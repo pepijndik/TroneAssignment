@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { toast } from 'react-toastify';
 import PrimaryButton from "./PrimaryButton";
 import { useRouter } from "next/router";
+import { useTrigger } from "@/hooks/trigger";
 type CharacterProps = {
   character: CharacterType
 }
@@ -16,6 +17,7 @@ export default function Character({ character }: CharacterProps) {
   const {setErrors} = useErrors()
   const [status, setStatus] = useState<string | null>(null)
   const { DeleteCharacter } = useCharacters()
+  const {trigger,setTrigger} = useTrigger();
   const router = useRouter()
   useEffect(()=>{
     toast(status);
@@ -33,15 +35,14 @@ export default function Character({ character }: CharacterProps) {
                 character.id,{
                   setErrors,
                   setStatus
-              })
+              });
+              setTrigger("updated");
             }
         }>Delete</DangerButton>
 
-    <PrimaryButton onClick={
+        <PrimaryButton onClick={
                 ()=> {
-                  router.push(`/character?id=${character.id}`, {
-                    
-                  })
+                  router.push(`/character?id=${character.id}`);
                 }
             }>Edit</PrimaryButton>
 

@@ -27,6 +27,25 @@ export const useCharacters = () => {
             })
     }
 
+    const GetCharacter  = async (id:number,args: IApiRequest): Promise<CharacterType|null> => {
+        const { setErrors,} = args
+        await csrf()
+        setErrors([])
+
+        return axios
+            .get(`/api/characters/${id}`)
+            .then(({data}) => {
+                console.log("data",data);
+                return data.character as CharacterType;
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+
+                setErrors(error.response.data.errors)
+                return null;
+            })
+    }
+
     const UpdateCharacter  = async (id:number,
         character: CharacterType, 
         args: IApiRequest) => {
@@ -115,6 +134,7 @@ export const useCharacters = () => {
     return {
         CreateCharacter,
         GetCharacters,
+        GetCharacter,
         UpdateCharacter,
         DeleteCharacter,
         Battle
