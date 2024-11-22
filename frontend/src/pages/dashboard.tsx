@@ -18,7 +18,7 @@ const Dashboard = () => {
     const [characters,setCharacters] = useState<CharacterType[]>(
         []
     );
-    const {trigger} = useTrigger();
+
     
     useEffect(() => {
         const reset = query && query.reset ? query.reset as string : ''
@@ -31,6 +31,10 @@ const Dashboard = () => {
     
     const { GetCharacters } = useCharacters();
 
+    const removeCharacter =  (id: number) => {
+    const updatedCharacters = characters.filter(character => character.id !== id);
+    setCharacters(updatedCharacters);
+    }
     useEffect( ()=>{
         const get = async ()=>{
             const char = await  GetCharacters({
@@ -40,7 +44,7 @@ const Dashboard = () => {
            setCharacters(char);
         }
         get();
-    },[trigger]);
+    },[]);
     
     return (
         <AppLayout
@@ -74,7 +78,7 @@ const Dashboard = () => {
                        
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {characters && characters.map((character) => (
-                            <Character key={character.id} character={character} />
+                            <Character key={character.id} character={character} onClick={removeCharacter} />
                         ))}
                         </div>
                     </div>
