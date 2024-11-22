@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-
+import forms from "@tailwindcss/forms";
 export default {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -14,5 +14,10 @@ export default {
       },
     },
   },
-  plugins: [],
+  variants: {
+    extend: {
+        opacity: ['disabled'],
+    },
+},
+ plugins: [forms],
 } satisfies Config;

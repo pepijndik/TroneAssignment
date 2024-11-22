@@ -22,8 +22,8 @@ class CharacterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
-            'gamename' => ['required', 'string'],
+            'name' => ['required', 'string','unique:App\Models\Character,name'],
+            'gamename' => ['required', 'string', 'unique:App\Models\Character,gamename'],
             'healthPoints' => ['required', 'integer','min:1'],
             'attackPoints' => ['required', 'integer','min:1'],
         ];
