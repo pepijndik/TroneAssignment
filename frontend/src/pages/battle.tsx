@@ -1,4 +1,5 @@
 import { CharacterType } from "@/app/types/CharacterType"
+import ErrorMessage from "@/components/Errors"
 import AppLayout from "@/components/Layouts/AppLayout"
 import PrimaryButton from "@/components/PrimaryButton"
 import { useCharacters } from "@/hooks/characters"
@@ -70,16 +71,17 @@ import { toast } from "react-toastify"
             <option key={character.id} value={character.id}>{character.name}</option>
         ))}
       </Select>
-         <PrimaryButton onClick={async ()=>{
+         <PrimaryButton onClick={
+          async ()=>{
              if(char && enemy){
           
-              const battleWinner = await Battle(char,enemy,{
+             const {data} = await Battle(char,enemy,{
                   setErrors,setStatus
               });
 
-              console.log(battleWinner);
-              setWinner( battleWinner?.winner_id ?? null);
-              toast(`Winner is ${battleWinner?.winner_id}`);
+              console.log(data);
+              setWinner( data?.winner_id ?? null);
+              toast(`Winner is ${data?.winner_id}`);
              }
               else{
 
@@ -89,6 +91,8 @@ import { toast } from "react-toastify"
          }}>
           Battle!
          </PrimaryButton>
+
+         <ErrorMessage errors={errors}/>
       </div>
 
 </AppLayout>)

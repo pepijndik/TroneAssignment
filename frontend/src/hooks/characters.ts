@@ -101,7 +101,7 @@ export const useCharacters = () => {
 
         setErrors([])
 
-        axios
+        return axios
             .post(`/api/characters/${id}/battle/${enemy}`, props)
             .then((data) => {
                 return data;
